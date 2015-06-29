@@ -3,6 +3,7 @@ Project in progress.
 # Description
 
 qualmod:
+
 1. ```qualmod.py```: A python module containing QM functions 
 2. ```web_SRI.py```: Python data structures defining the Santa Rosa
 Island community and the plausibility constraints
@@ -11,6 +12,7 @@ plausible parameter space for unique species-response combinations to
 invasion of the island scrub jay
 
 docs:
+
 1. ```species_additions.ipynb```: Python notebook
 summarising the mathematical approach
 
