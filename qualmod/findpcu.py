@@ -66,7 +66,7 @@ def getRespvarList2BoolvarList(respvarList, str4true, str4false):
     The purpose of this function is to create basic boolean algebra
     structures from a list of strings representing response variables
     (respvarList) and strings representing the response values mapping
-    to true (str4true) and false (str4false), which are used as
+    to true (str4true, a single string or list of strings) and false (str4false), which are used as
     prefixes. The structures it creates and returns are (1) a list of
     boolean variables, (2) a bidictionary mapping the boolean values
     to their string representations, and (3) a bidictionary mapping
@@ -96,7 +96,7 @@ def getRespvarList2BoolvarList(respvarList, str4true, str4false):
     l = len(respvarList)
     boolvarList = list(map(exprvar, respvarList))
 
-    respvalList = [str4true + respvar for respvar in respvarList] + [str4false + respvar for respvar in respvarList] 
+    respvalList = [''.join(str4true) + respvar for respvar in respvarList] + [''.join(str4false) + respvar for respvar in respvarList] 
     boolvalList = boolvarList + [~x for x in boolvarList]
 
     boolval2respval = bidict(zip( boolvalList, respvalList))
@@ -147,14 +147,14 @@ def getUnobservedInts(fInName, desiredResponsesMask, boolLen, str4true, subsetMa
 
         if subsetMask == None:
 
-            i = int(''.join(['1' if i == str4true else '0' for i in compress(row,desiredResponsesMask)]), 2)
+            i = int(''.join(['1' if i in str4true else '0' for i in compress(row,desiredResponsesMask)]), 2)
             unobservedInts.discard(i)
 
         else:
 
             if tuple(compress(row, subsetMask)) == subsetResponses:
 
-                i = int(''.join(['1' if i == str4true else '0' for i in compress(row,desiredResponsesMask)]), 2)
+                i = int(''.join(['1' if i in str4true else '0' for i in compress(row,desiredResponsesMask)]), 2)
                 unobservedInts.discard(i)
 
     fIn.close()

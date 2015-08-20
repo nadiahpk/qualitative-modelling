@@ -4,7 +4,7 @@ import networkx as nx
 
 from qualmod import initialise_foodweb, qualitative_community_matrix, draw_foodweb, get_conditions_lists, get_spp_list, update_s2idx, delta_spp_removal, delta_spp_addition
 from web_SRI import positive_edges_dict, negative_edges_dict, abiotic_species_list, livestock_removal_responses, r_signs
-from somepars import ambig_edges_list
+from sj1pars import ambig_edges_list
 
 # Nimrod begin
 # Get ID for this nimrod task
