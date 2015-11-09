@@ -24,7 +24,7 @@ record_totext = False # Record sum of effects if extinction
 
 search_terminator = 0.5
 #t_max = 1e8
-t_max = 10
+t_max = 500
 
 # = Create base network
 
