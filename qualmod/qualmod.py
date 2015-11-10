@@ -2,6 +2,47 @@ import networkx as nx
 import numpy as np
 from bidict import bidict
 
+# = Sampling 
+
+def getM(drawsFnc,Mq):
+    '''
+    Returns a stable community matrix (Jacobian) corresponding to the
+    qualitative matrix Mq with non-zero elements chosen using the
+    method specified in drawsFnc
+
+    example use: M = getM(lambda Mq: unifM(Mq), Mq)
+    '''
+
+    cntRejected = 0
+    M = drawsFnc(Mq)
+
+    while isStableM(M) == False:
+        cntRejected += 1
+        M = drawsFnc(Mq)
+
+    return M, cntRejected
+
+def unifM(Mq):
+    '''
+    Returns a community matrix (Jacobian) corresponding to the
+    qualitative matrix Mq with non-zero elements chosen from a random
+    uniform distribution
+    '''
+
+    M = np.multiply(np.random.random_sample( Mq.shape ), Mq)
+
+    return M
+
+def isStableM(M):
+    '''
+    Returns True if community matrix (the Jacobian) M is stable
+    '''
+
+    return max(np.real(np.linalg.eigvals(M))) < 0
+
+
+# = Utility functions
+
 def initialise_foodweb(positive_edges_dict, negative_edges_dict):
 
     """
@@ -309,3 +350,4 @@ def delta_spp_addition(M_orig, M_new_col, M_new_row=None):
         M_new = np.concatenate( ( np.concatenate( ( np.dot(M_orig, np.diag(delta+1)) , np.array([M_new_col]).T), axis=1 ) , np.array([M_new_row])), axis=0 )
 
     return delta, M_new
+

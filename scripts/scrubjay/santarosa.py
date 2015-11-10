@@ -73,6 +73,7 @@ SJq_row = np.zeros(n_erad)
 
 for neighbor in full_web.neighbors('scrubJay'):
 
+    # TODO:  this is wrong, the edges are directional
     if full_web.has_edge('scrubJay',neighbor) and neighbor in s2idx_erad:
         SJq_col[ s2idx_erad[neighbor] ] = full_web['scrubJay'][neighbor]['sign']
 
