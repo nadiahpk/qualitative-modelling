@@ -71,9 +71,9 @@ s2idx_erad, graz2eradIdxs = update_s2idx(s2idx_graz, [rem_spp])
 SJq_col = np.zeros(n_erad)
 SJq_row = np.zeros(n_erad)
 
+# TODO:  this is wrong, for some reason neighbors only picks up successor nodes
 for neighbor in full_web.neighbors('scrubJay'):
 
-    # TODO:  this is wrong, the edges are directional
     if full_web.has_edge('scrubJay',neighbor) and neighbor in s2idx_erad:
         SJq_col[ s2idx_erad[neighbor] ] = full_web['scrubJay'][neighbor]['sign']
 
