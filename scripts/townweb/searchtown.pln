@@ -1,0 +1,16 @@
+parameter ID integer range from 0 to 3 step 1;
+
+task nodestart
+    copy qualmod.py node:.
+    copy searchweb.py node:.
+    copy web_TWN.py node:.
+    copy searchallwebs_nimrod.py node:.
+endtask
+
+task main
+    node:execute python searchallwebs_nimrod.py ${ID}
+    copy node:uniques_easy_${ID}.csv output/
+    copy node:uniques_hard_${ID}.csv output/
+    copy node:info_${ID}.txt output/
+endtask
+
