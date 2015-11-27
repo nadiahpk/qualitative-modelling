@@ -80,6 +80,19 @@ for neighbor in full_web.neighbors('scrubJay'):
     if full_web.has_edge(neighbor,'scrubJay') and neighbor in s2idx_erad:
         SJq_row[ s2idx_erad[neighbor] ] = full_web[neighbor]['scrubJay']['sign']
 
+# TODO: Replace with something like this
+'''
+newqRow = np.zeros(len(s2idxErad))
+for p in fullWeb.predecessors(newSpp):
+    if p in s2idxErad:
+        newqRow[ s2idxErad[p] ] = fullWeb[p][newSpp]['sign']
+
+newqCol = np.zeros(len(s2idxErad))
+for s in fullWeb.successors(newSpp):
+    if s in s2idxErad:
+        newqCol[ s2idxErad[s] ] = fullWeb[newSpp][s]['sign']
+'''
+
 # = We're interested in matching two plausibility criteria 
 
 # (1) Sign conditions on the livestock removal responses
@@ -161,6 +174,7 @@ while (((t-t_last_updated) < search_terminator*t) | (t < 1000)) & (t < t_max):
 
     # = Find the response of the species to the invasion and store result
 
+    # TODO: Add to erad, not graz
     M_new_col = np.random.random_sample(n_erad) * SJq_col
     delta_inv, throwout = delta_spp_addition( M_graz[graz2eradIdxs,:][:,graz2eradIdxs] , M_new_col )
 

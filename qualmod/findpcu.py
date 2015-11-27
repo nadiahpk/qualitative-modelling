@@ -1,4 +1,5 @@
 import csv
+import time
 from pyeda.boolalg.expr import exprvar, And, Or, Not
 from bidict import bidict
 from itertools import compress
@@ -163,3 +164,121 @@ def getUnobservedInts(fInName, desiredResponsesMask, boolLen, str4true, subsetMa
 
 # ----
 
+def general_pcu_search(fInName, str4true, str4false, desiredResponses=None, subsetConstraints=None):
+    '''
+    Accepts a file containing comma-separated value rows of responses and minimises according to the desiredResponses and constraints imposed
+    '''
+
+    # = Read in the header, which creates allResponses, and order our desiredResponses to correspond to that
+    a = time.clock()
+    print('Started. Obtaining list of unobserveds ...')
+
+    fIn = open(fInName)
+    csv_f = csv.reader(fIn)
+    allResponses = next(csv_f)
+    fIn.close()
+
+    # = Get subsetResponses, so that they're in order of appearance in the file we're using, they are the response outcomes we're including in the minimisation
+
+    if subsetConstraints: 
+        fileIdx = [allResponses.index(sR[0]) for sR in subsetConstraints]
+        subsetResponses = tuple(zip(*sorted(zip(fileIdx,subsetConstraints))))[1]
+        subsetResponses = tuple(zip(*subsetResponses)) #subset responses so it's ( (resp1, resp2, ...), (val1, val2, ...) ) in order of appearance
+    else:
+        subsetResponses = None
+
+    # = Get desiredResponses, so that they're in order of appearance in the file we're using, they are the responses species we're including in the minimisation
+
+    if desiredResponses:
+        # Sort our desiredResponses according to the order they appear in allResponses
+        fileIdx = [allResponses.index(dR) for dR in desiredResponses]
+        desiredResponses = list(zip(*sorted(zip(fileIdx,desiredResponses))))[1]
+    else:
+        if subsetResponses:
+            # Make sure our subsetted responses aren't included
+            desiredResponses = list(filter(lambda r: not r in subsetResponses[0], allResponses))
+        else:
+            desiredResponses = allResponses
+
+    boolLen = len(desiredResponses)
+
+    # = Create masks
+
+    desiredResponsesMask = [aR in desiredResponses for aR in allResponses]
+
+    if subsetResponses:
+        subsetMask = [r in subsetResponses[0] for r in allResponses]
+    else:
+        subsetMask = None
+
+    # = Get all of our unobserved combinations of desiredResponses as a set of integers
+
+    if subsetConstraints: 
+        unobservedInts = getUnobservedInts(fInName, desiredResponsesMask, boolLen, str4true, subsetMask, subsetResponses[1])
+    else:
+        unobservedInts = getUnobservedInts(fInName, desiredResponsesMask, boolLen, str4true)
+
+    # = Turn our set of unobserveds into a boolean expression =
+    b = time.clock()
+    print(b-a)
+    print('List of unobserved obtained. Boolean expression being generated ...')
+
+    # Create our boolean variables and some useful dictionaries
+    x, x2s, r2idx = getRespvarList2BoolvarList(desiredResponses, str4true, str4false)
+
+    # Turn each integer representing unobserved into a
+    # boolean-and into boolean expression 
+    unobservedBoolexpr = intList2boolexpr(unobservedInts, x)
+
+    # = Use espresso to minimise the unobservedBoolexpr
+    c = time.clock()
+    print(c-b)
+    print('Boolean expression generated. Minimisation being performed ...')
+
+    boolExprMin, = espresso_exprs(unobservedBoolexpr)
+
+    # Turn boolean expression into list of list of strings
+    PCUList = boolexpr2RespvalList(boolExprMin, x2s)
+
+
+    # = Write a file of the results
+    d = time.clock()
+    print(d-c)
+    print('Minimisation complete.')
+
+    # = Write the PCUs we've found to a file
+
+    fOutName = fInName.split('.c')[0]
+
+    if subsetConstraints:
+
+        # Write the subsetMask as an integer, use as identifier for file
+        subsetID = int(''.join(['1' if a else '0' for a in subsetMask]),2)
+        fOutName = fOutName + '_sub' + str(subsetID) + '_pcus.py'
+
+    else:
+
+        # Use basic name
+        fOutName = fOutName + '_pcus.py'
+
+    fOut = open(fOutName,'w')
+    print('Writing ' + fOutName + ' ...')
+
+    # Write a preamble about the subsetting, if needed
+    if subsetConstraints:
+
+        fOut.write('# Minimisation performed on a subset subject to the following constraints\n')
+        for sName, sConst in subsetConstraints:
+            fOut.write('# ')
+            fOut.write(sName + ': ' + sConst + '\n')
+
+    # First write the desiredResponses, so we know on which part the search was done
+    fOut.write('searchedResponses = [\'' + '\',\''.join(desiredResponses) + '\']\n')
+
+    # Now write each PCU
+    fOut.write('PCUList = [\n')
+    for PCU in PCUList:
+        fOut.write('[\'' + '\',\''.join(PCU) + '\'],\n')
+    fOut.write(']\n')
+
+    fOut.close()

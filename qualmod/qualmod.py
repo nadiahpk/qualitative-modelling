@@ -4,6 +4,17 @@ from bidict import bidict
 
 # = Sampling 
 
+def getStableM(drawsFnc, *args):
+
+    cntRejected = 0
+    M = drawsFnc(*args)
+
+    while isStableM(M) == False:
+        cntRejected += 1
+        M = drawsFnc(*args)
+
+    return M, cntRejected
+
 def getM(drawsFnc,Mq):
     '''
     Returns a stable community matrix (Jacobian) corresponding to the
@@ -30,6 +41,31 @@ def unifM(Mq):
     '''
 
     M = np.multiply(np.random.random_sample( Mq.shape ), Mq)
+
+    return M
+
+def unifMRConstr(Mq, s2idx, rConstr):
+    '''
+    Returns a community matrix (Jacobian) corresponding to the
+    qualitative matrix Mq with non-zero elements chosen from a random
+    uniform distribution, but with the added constraints on
+    the signs of r, which are the negative of the sums of
+    columns in M
+    '''
+
+    (nrows, ncols) = Mq.shape
+
+    M = np.multiply(np.random.random_sample( (nrows, ncols) ), Mq)
+
+    for sppName, rSign in rConstr.items():
+
+        i = s2idx[sppName]
+
+        # While we don't have a match for this r sign,
+        # redraw its M values
+        while np.sign(-np.sum(M[i,:])) != rSign:
+
+            M[i,:] = np.random.random_sample( (ncols,) ) * Mq[i,:]
 
     return M
 
@@ -124,7 +160,7 @@ def qualitative_community_matrix(G, spp_to_idx=None):
 
     # A mapping from the species names to an index in the community matrix
     if spp_to_idx is None:
-        spp_to_idx = bidict( zip(G.nodes(), range(order)) )
+        spp_to_idx = bidict( zip(sorted(G.nodes()), range(order)) )
 
     # Construction of the qualitative community matrix
     Mq = np.zeros(shape=(order,order))

@@ -1,4 +1,4 @@
-spp_list = ['manzanita', 'baldEagle', 'fogMoisture', 'skunk', 'understoryPlants', 'livestock', 'gopherSnake', 'willow', 'raptorSmall', 'fox', 'precipitation', 'openCupNestingPasserines', 'treesBig', 'scrubJay', 'westNileVirus', 'mosquito', 'woodpecker', 'shrike', 'raven', 'rats', 'scrubOak', 'mouse', 'goldenEagle']
+spp_list = ['manzanita', 'baldEagle', 'fogMoisture', 'skunk', 'understoryPlants', 'livestock', 'gopherSnake', 'willow', 'raptorSmall', 'fox', 'precipitation', 'passerines', 'treesBig', 'scrubJay', 'westNileVirus', 'mosquito', 'woodpecker', 'shrike', 'raven', 'rats', 'scrubOak', 'mouse', 'goldenEagle']
 
 # Interaction matrix from Scott Morrison email "Matrix" to nadiah.org on 09/09/15
 # Original excel file in ~/work/scrubjay/corresp/matrices/SRI_interaction_matrix_Sep09.xlsx
@@ -10,25 +10,26 @@ positive_edges_dict = {
 'scrubOak': ['scrubJay', 'fogMoisture', 'precipitation', 'mouse'],
 'treesBig': ['manzanita', 'scrubOak', 'mouse', 'scrubJay', 'fogMoisture', 'precipitation'],
 'understoryPlants': ['manzanita', 'scrubOak', 'treesBig', 'fogMoisture', 'precipitation'],
-'fox': ['manzanita', 'treesBig', 'skunk', 'mouse', 'openCupNestingPasserines', 'gopherSnake', 'shrike', 'rats', 'scrubJay'],
-'skunk': ['mouse', 'openCupNestingPasserines', 'gopherSnake', 'shrike', 'rats', 'scrubJay'],
-'mouse': ['manzanita', 'scrubOak', 'treesBig', 'understoryPlants', 'openCupNestingPasserines'],
-'openCupNestingPasserines': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'understoryPlants'],
-'raptorSmall': ['treesBig', 'fox', 'skunk', 'mouse', 'openCupNestingPasserines', 'gopherSnake', 'woodpecker', 'rats', 'scrubJay'],
-'raven': ['treesBig', 'mouse', 'openCupNestingPasserines', 'gopherSnake', 'livestock', 'rats', 'scrubJay'],
+'fox': ['manzanita', 'treesBig', 'skunk', 'mouse', 'passerines', 'gopherSnake', 'shrike', 'rats', 'scrubJay'],
+'skunk': ['mouse', 'passerines', 'gopherSnake', 'shrike', 'rats', 'scrubJay'],
+'mouse': ['manzanita', 'scrubOak', 'treesBig', 'understoryPlants', 'passerines'],
+'passerines': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'understoryPlants'],
+'raptorSmall': ['treesBig', 'fox', 'skunk', 'mouse', 'passerines', 'gopherSnake', 'woodpecker', 'rats', 'scrubJay'],
+'raven': ['treesBig', 'mouse', 'passerines', 'gopherSnake', 'livestock', 'rats', 'scrubJay'],
 'goldenEagle': ['fox', 'skunk', 'mouse', 'raptorSmall', 'livestock', 'rats', 'gopherSnake'],
 'baldEagle': ['fox', 'skunk', 'raptorSmall', 'gopherSnake', 'livestock'],
-'gopherSnake': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'understoryPlants', 'mouse', 'openCupNestingPasserines', 'woodpecker', 'rats', 'scrubJay'],
+'gopherSnake': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'understoryPlants', 'mouse', 'passerines', 'woodpecker', 'rats', 'scrubJay'],
 'mosquito': ['fogMoisture', 'precipitation', 'willow', 'manzanita', 'scrubOak', 'treesBig'],
 'woodpecker': ['scrubOak', 'treesBig'],
-'shrike': ['mouse', 'openCupNestingPasserines'],
+'shrike': ['mouse', 'passerines'],
 'livestock': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'understoryPlants'],
-'rats': ['manzanita', 'scrubOak', 'treesBig', 'understoryPlants', 'mouse', 'openCupNestingPasserines', 'shrike', 'scrubJay'],
-'scrubJay': ['scrubOak', 'treesBig', 'mouse', 'openCupNestingPasserines'],
-'westNileVirus': ['openCupNestingPasserines', 'raptorSmall', 'raven', 'goldenEagle', 'baldEagle', 'mosquito', 'woodpecker', 'shrike', 'scrubJay'],
+'rats': ['manzanita', 'scrubOak', 'treesBig', 'understoryPlants', 'mouse', 'passerines', 'shrike', 'scrubJay'],
+'scrubJay': ['scrubOak', 'treesBig', 'mouse', 'passerines'],
+'westNileVirus': ['passerines', 'raptorSmall', 'raven', 'goldenEagle', 'baldEagle', 'mosquito', 'woodpecker', 'shrike', 'scrubJay'],
 'fogMoisture': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'understoryPlants'],
 }
 
+# I'm imposing self-regulation on all
 negative_edges_dict = {
 'willow': ['willow', 'livestock'],
 'manzanita': ['manzanita', 'scrubOak', 'treesBig', 'livestock', 'rats'],
@@ -38,7 +39,7 @@ negative_edges_dict = {
 'fox': ['fox', 'raptorSmall', 'goldenEagle', 'baldEagle'],
 'skunk': ['fox', 'skunk', 'raptorSmall', 'goldenEagle', 'baldEagle'],
 'mouse': ['fox', 'skunk', 'mouse', 'raptorSmall', 'raven', 'gopherSnake', 'shrike', 'rats', 'scrubJay'],
-'openCupNestingPasserines': ['fox', 'skunk', 'mouse', 'openCupNestingPasserines', 'raptorSmall', 'raven', 'gopherSnake', 'shrike', 'rats', 'scrubJay', 'westNileVirus'],
+'passerines': ['fox', 'skunk', 'mouse', 'passerines', 'raptorSmall', 'raven', 'gopherSnake', 'shrike', 'rats', 'scrubJay', 'westNileVirus'],
 'raptorSmall': ['willow', 'manzanita', 'scrubOak', 'raptorSmall', 'goldenEagle', 'baldEagle', 'westNileVirus'],
 'raven': ['raven', 'goldenEagle', 'baldEagle', 'westNileVirus'],
 'goldenEagle': ['willow', 'manzanita', 'scrubOak', 'treesBig', 'goldenEagle', 'baldEagle', 'westNileVirus', 'fogMoisture'],
@@ -49,6 +50,8 @@ negative_edges_dict = {
 'livestock': ['goldenEagle', 'livestock', 'raven', 'baldEagle'],
 'rats': ['fox', 'skunk', 'raptorSmall', 'raven', 'gopherSnake', 'rats'],
 'scrubJay': ['fox', 'skunk', 'raptorSmall', 'raven', 'gopherSnake', 'woodpecker', 'shrike', 'rats', 'scrubJay', 'westNileVirus'],
+'mosquito': ['mosquito'],
+'fogMoisture': ['fogMoisture'],
 }
 
 uncertain_positive_edges_dict = {
@@ -56,7 +59,7 @@ uncertain_positive_edges_dict = {
 'skunk': ['shrike', 'scrubJay'],
 'baldEagle': ['gopherSnake', 'livestock'],
 'mosquito': ['willow', 'manzanita', 'scrubOak', 'treesBig'],
-'shrike': ['openCupNestingPasserines'],
+'shrike': ['passerines'],
 }
 
 uncertain_negative_edges_dict = {
@@ -87,13 +90,24 @@ uncertain_negative_edges_dict = {
 
 abiotic_species_list = ['fogMoisture', 'precipitation']
 
-# species not currently represented on santa rosa
-absent_species_list = ['livestock', 'scrubJay', 'westNileVirus', 'rats']
-
 # Constraints from Scott Morrison email 22 October 2015 to uq (fwd to nadiah.org) on 22 October (26 October), find in ~/work/scrubjay/corresp/constraints/ConstraintsMatrix_v1_Oct15.pdf
 
-# Results of livestock removal
-livestock_removal_responses = {
+# = Response to livestock removal
+
+# Results of livestock removal, generous with uncertainty (see /home/elendil/work/scrubjay/corresp/constraints/summary.ods)
+livestock_removal_responses_lax = {
+    'manzanita' : +1,
+    'understoryPlants' : +1,
+    'willow' : +1,
+    'fox': +1,
+    'passerines': +1,
+    'treesBig': +1,
+    'raven': -1,
+    'scrubOak' : +1,
+}
+
+# Results of livestock removal, TODO double check these
+livestock_removal_responses_strict = {
     'manzanita' : +1,
     'baldEagle': +1,
     'skunk': +1,
@@ -102,41 +116,48 @@ livestock_removal_responses = {
     'willow' : +1,
     'raptorSmall': +1,
     'fox': +1,
-    'openCupPasserines': +1,
+    'passerines': +1,
     'treesBig': +1,
-    'scrubJay': +1,
     'mosquito': +1,
     'raven': -1,
-    'rats': +1,
     'scrubOak' : +1,
     'mouse' : +1,
     'shrike' : -1,
     'goldenEagle' : -1,
 }
-livestock_removal_responses_uncertain = [ 'baldEagle', 'skunk', 'gopherSnake' , 'mosquito', 'rats', 'shrike' ]
-livestock_removal_possible_extinctions = ['shrike', 'goldenEagle']
 
-# r constraints here (the growth rate in the absence of all of the species modelled, could survive --> +1)
-r_signs = {
+# = Survival after eradication of livestock
+
+# Lax is most generous with uncertainty, and kind of disagreement and don't assume that survives
+livestock_removal_survive_lax = [ 'manzanita', 'skunk', 'understoryPlants', 'gopherSnake', 'willow', 'raptorSmall', 'fox', 'passerines', 'treesBig', 'mosquito', 'raven', 'scrubOak']
+
+# Strict uses only one prediction that will likely survive to include, so only golden eagle, shrike, and woodpecker not assumed surviving
+livestock_removal_survive_strict = [ 'manzanita', 'baldEagle', 'skunk', 'understoryPlants', 'gopherSnake', 'willow', 'raptorSmall', 'fox', 'passerines', 'treesBig', 'mosquito', 'raven', 'scrubOak', 'mouse']
+
+# = Constraint on r sign (the growth rate in the absence of all of the species modelled, could survive --> +1)
+r_signs_lax = {
     'manzanita': +1,
     'baldEagle': +1,
-    'skunk': -1,
+    'willow': +1,
+    'westNileVirus': -1,
+    'rats': +1,
+    'scrubOak': +1,
+    'mouse': +1,
+}
+
+r_signs_strict = {
+    'manzanita': +1,
+    'baldEagle': +1,
     'understoryPlants': +1,
     'livestock': +1,
-    'gopherSnake': +1,
     'willow': +1,
     'raptorSmall': -1,
-    'fox': -1,
-    'openCupNestingPasserines': -1,
-    'treesBig': +1,
+    'passerines': -1,
     'scrubJay': -1,
     'westNileVirus': -1,
     'mosquito': +1,
-    'raven': +1,
     'rats': +1,
     'scrubOak': +1,
     'mouse': +1,
     'shrike': +1,
-    'goldenEagle': -1,
 }
-r_signs_uncertain = ['understoryPlants', 'gopherSnake', 'raptorSmall', 'openCupNestingPasserines', 'scrubJay', 'mosquito', 'raven', 'shrike', 'goldenEagle']
