@@ -221,7 +221,7 @@ def general_pcu_search(fInName, str4true, str4false, desiredResponses=None, subs
     # = Turn our set of unobserveds into a boolean expression =
     b = time.clock()
     print(b-a)
-    print('List of unobserved obtained. Boolean expression being generated ...')
+    print('List of unobserved obtained (length=' + str(len(unobservedInts)) + '). Boolean expression being generated ...')
 
     # Create our boolean variables and some useful dictionaries
     x, x2s, r2idx = getRespvarList2BoolvarList(desiredResponses, str4true, str4false)
@@ -254,12 +254,11 @@ def general_pcu_search(fInName, str4true, str4false, desiredResponses=None, subs
 
         # Write the subsetMask as an integer, use as identifier for file
         subsetID = int(''.join(['1' if a else '0' for a in subsetMask]),2)
-        fOutName = fOutName + '_sub' + str(subsetID) + '_pcus.py'
+        fOutName += '_sub' + str(subsetID) 
 
-    else:
-
-        # Use basic name
-        fOutName = fOutName + '_pcus.py'
+    # Write the desiredResponseMask as an integer, use as identifier
+    drID = int(''.join(['1' if a else '0' for a in desiredResponsesMask]),2) 
+    fOutName += '_dr' + str(drID) + '_pcus.py'
 
     fOut = open(fOutName,'w')
     print('Writing ' + fOutName + ' ...')
