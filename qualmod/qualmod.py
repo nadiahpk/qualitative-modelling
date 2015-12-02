@@ -338,17 +338,20 @@ def delta_spp_removal(M_orig, ks):
 
     # Now we have a stable grazing web, M_grazing.
     # Remove the removal species
-    M_new = np.delete(M_orig, ks, axis=0)
-    M_new_ks = M_new[:,ks]
-    M_new = np.delete(M_new, ks, axis=1)
+    M_notk = np.delete(M_orig, ks, axis=0)
+    M_notk_ks = M_notk[:,ks]
+    M_notk = np.delete(M_notk, ks, axis=1)
 
     # This is the response to the removal
-    delta = np.linalg.solve(M_new, M_new_ks)
+    delta = np.linalg.solve(M_notk, M_notk_ks)
 
     # Deal with if there is more than one species to be removed
     if not isinstance(ks,int):
         if len(ks) > 1:
             delta = sum(delta.T)
+
+    # The new scaled Jacobian is:
+    M_new = np.dot(M_notk,np.diag(delta+1))
 
     return delta, M_new
 
