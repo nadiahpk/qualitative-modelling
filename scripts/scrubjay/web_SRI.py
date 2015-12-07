@@ -131,8 +131,8 @@ livestock_removal_responses_strict = {
 # Lax is most generous with uncertainty, and kind of disagreement and don't assume that survives
 livestock_removal_survive_lax = [ 'manzanita', 'skunk', 'understoryPlants', 'gopherSnake', 'willow', 'raptorSmall', 'fox', 'passerines', 'treesBig', 'mosquito', 'raven', 'scrubOak']
 
-# Strict uses only one prediction that will likely survive to include, so only golden eagle, shrike, and woodpecker not assumed surviving
-livestock_removal_survive_strict = [ 'manzanita', 'baldEagle', 'skunk', 'understoryPlants', 'gopherSnake', 'willow', 'raptorSmall', 'fox', 'passerines', 'treesBig', 'mosquito', 'raven', 'scrubOak', 'mouse']
+# Strict uses only those indicated to potentially not survive, so only golden eagle and shrike
+livestock_removal_survive_strict = ['baldEagle', 'fogMoisture', 'fox', 'gopherSnake', 'manzanita', 'mosquito', 'mouse', 'passerines', 'raptorSmall', 'raven', 'scrubOak', 'skunk', 'treesBig', 'understoryPlants', 'willow', 'woodpecker']
 
 # = Constraint on r sign (the growth rate in the absence of all of the species modelled, could survive --> +1)
 r_signs_lax = {

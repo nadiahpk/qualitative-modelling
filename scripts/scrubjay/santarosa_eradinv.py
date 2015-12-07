@@ -1,9 +1,10 @@
 import imp
+import copy
 import sys
 import numpy as np
 import networkx as nx
 
-from qualmod import initialise_foodweb, qualitative_community_matrix, update_s2idx, get_spp_list, getM, delta_spp_removal, getStableM, unifMRConstr, delta_spp_addition
+from qualmod import initialise_foodweb, qualitative_community_matrix, update_s2idx, get_spp_list, getM, delta_spp_removal, getStableM, unifMRConstr, delta_spp_addition, isStableM
 
 riflag = int(sys.argv[1]) # Just these two extreme variations for now
 
@@ -20,10 +21,10 @@ remSppName = 'livestock'
 
 # Length of search
 search_terminator = 0.5
-t_max = 1e5
-t_min = 1e3
-#t_max = 3
-#t_min = 2
+#t_max = 1e5
+#t_min = 1e3
+t_max = 3
+t_min = 2
 
 # A list of species to remove from the full web to create the post-invasion web
 remFromFullWeb = ['precipitation', 'westNileVirus', 'rats']
@@ -33,7 +34,7 @@ remFromFullWeb = ['precipitation', 'westNileVirus', 'rats']
 drawsFnc = lambda Mq, s2idx, rConstr: unifMRConstr(Mq, s2idx, rConstr)
 
 # Validation function for eradication response
-validnFncSurvivors = lambda delta, s2idx: [delta[s2idx[sppName]] > -1 for sppName in data.livestock_removal_survive_lax]
+validnFncSurvivors = lambda delta, s2idx: [delta[s2idx[sppName]] > -1 for sppName in data.livestock_removal_survive_strict]
 validnFncResponses = lambda delta, s2idx: [np.sign(delta[s2idx[sppName]]) == sppResp for sppName, sppResp in data.livestock_removal_responses_lax.items()]
 
 # A function to define our r sign constraints. 
@@ -43,17 +44,13 @@ getRConstr = lambda s2idx: {sppName: rSign for sppName,rSign in data.r_signs_lax
 # == Which types of responses will we record?
 
 recordErad = True # Recording signs of responses to eradication
-ml = ['baldEagle', 'goldenEagle', 'gopherSnake', 'mouse', 'raptorSmall', 'shrike', 'skunk', 'woodpecker']
-getMonitorErad = lambda sppList: [s for s in sppList if s in ml]
+recordEradNames = ['baldEagle', 'goldenEagle', 'gopherSnake', 'mouse', 'raptorSmall', 'shrike', 'skunk', 'woodpecker'] # set(s2idxErad.keys()) - set(data.livestock_removal_responses_lax.keys())
 
 recordEradExt = False # Recording if extinction occurred after eradication
+recordEradExtNames = ['goldenEagle', 'shrike']
 
-recordInv = False # Recording signs of responses to invasion
-
-recordInvExt = False # Recording if extinction occurred after invasion
-
-recordTot = True # Recording sign of total response to both eradication and invasion
-
+recordTot = False # Recording sign of total response to both eradication and invasion
+recordTotNames = ['baldEagle', 'fogMoisture', 'fox', 'goldenEagle', 'gopherSnake', 'manzanita', 'mosquito', 'mouse', 'passerines', 'raptorSmall', 'raven', 'scrubOak', 'shrike', 'skunk', 'treesBig', 'understoryPlants', 'willow', 'woodpecker']
 
 # Note that the functions above require that data be defined before they're called
 # = /Inputs
@@ -87,34 +84,25 @@ origWeb.remove_nodes_from([newSppName])
 # Dictionary of r constraints
 rConstr = getRConstr(s2idxOrig)
 
-# TODO: Just trying to speed the damned thing up
+# NOTE: Weaken the stability constraint here to speed up finding stable systems 
 for i in range(len(s2idxOrig)):
     MqOrig[i,i] = -2
 
 # = Get all of the indexing stuff we'll need for after the eradication
+# Mark as "0" because it is for the initial species eradicated, not for any cascading extinction effects
 
 remSppIdx = s2idxOrig[remSppName]
-s2idxErad, orig2eradIdxs = update_s2idx(s2idxOrig, [remSppName])
-sppListErad = get_spp_list(s2idxErad) # List of species ordered by index
-nErad = len(sppListErad)
-
-# == Monitoring species lists and indices
-monitorErad = getMonitorErad(sppListErad)
-monitorEradIdxs = [s2idxErad[s] for s in monitorErad]
+s2idxErad0, orig2eradIdxs = update_s2idx(s2idxOrig, [remSppName])
+sppListErad0 = get_spp_list(s2idxErad0) # List of species ordered by index
+nErad0 = len(sppListErad0)
 
 # = Indexing etc. for outcomes of invasion
 
-'''
-newqRow = np.zeros(nErad)
-for p in fullWeb.predecessors(newSppName):
-    if p in s2idxErad:
-        newqRow[ s2idxErad[p] ] = fullWeb[p][newSppName]['sign']
-'''
-
-newqCol = np.zeros(len(s2idxErad))
+lenNewqCol = len(s2idxErad0)
+newqCol = np.zeros(lenNewqCol)
 for s in fullWeb.successors(newSppName):
-    if s in s2idxErad:
-        newqCol[ s2idxErad[s] ] = fullWeb[newSppName][s]['sign']
+    if s in s2idxErad0:
+        newqCol[ s2idxErad0[s] ] = fullWeb[newSppName][s]['sign']
 
 # = Prepare output file
 
@@ -127,19 +115,13 @@ f = open(fOutName,'w')
 
 interactions = list()
 if recordErad:
-    interactions += ['erad_' + spp for spp in monitorErad]
+    interactions += ['erad_' + spp for spp in recordEradNames]
 
 if recordEradExt:
-    interactions += ['eradExt_' + spp for spp in monitorEradExt]
-
-if recordInv:
-    interactions += ['inv_' + spp for spp in monitorInv]
-
-if recordInvExt:
-    interactions += ['invExt_' + spp for spp in monitorInvExt]
+    interactions += ['eradExt_' + spp for spp in recordEradExtNames]
 
 if recordTot:
-    interactions += ['tot_' + spp for spp in sppListErad]
+    interactions += ['tot_' + spp for spp in recordTotNames]
 
 f.write(','.join(interactions) + '\n')
 
@@ -152,54 +134,119 @@ responses = set()
 
 t = 0
 t_last_updated = 0
-while (((t-t_last_updated) < search_terminator*t) | (t < t_min)) & (t < t_max):
+#while (((t-t_last_updated) < search_terminator*t) | (t < t_min)) & (t < t_max):
+#if True:
+while t < 10:
 
     validRes = False # The response sign validation condition
+    validSur = False # The survival validation condition
 
-    while validRes == False:
+    while (validRes == False) or (validSur == False):
 
-        validSur = False # The survival validation condition
+        # Reset to False, as only changing on finding True
 
-        cntInvalid = 0
-        while validSur == False:
+        validRes = False 
+        validSur = False 
 
-            # = Draw M
+        # = Draw stable MOrig
 
-            MOrig, cntRej = getStableM(drawsFnc, MqOrig, s2idxOrig, rConstr)
+        MOrig, cntRej = getStableM(drawsFnc, MqOrig, s2idxOrig, rConstr)
 
-            # == Do eradication and see if all survive
+        # == Do eradication and see if all survive
 
-            # This is the response to the removal
-            deltaErad, MErad = delta_spp_removal(MOrig, remSppIdx)
+        # This is the response to the removal
+        deltaErad0, MErad0 = delta_spp_removal(MOrig, remSppIdx)
+        deltaErad = deltaErad0
+        MErad = MErad0
+        # We keep deltaErad0 as it will be used to find the total effect of both eradication of the grazer and extinction
 
-            if all(validnFncSurvivors(deltaErad, s2idxErad)):
+        if all(validnFncSurvivors(deltaErad, s2idxErad0)):
+
+            extns = deltaErad < -1
+
+            if any(extns) == False and isStableM(MErad):
+
                 validSur = True
+
+                if all(validnFncResponses(deltaErad, s2idxErad0)):
+
+                    # Set the indices dictionary we'll be using later
+                    s2idxErad = s2idxErad0
+                    validRes = True # EXITs here
+
             else:
-                cntInvalid += 1
 
-        if all(validnFncResponses(deltaErad, s2idxErad)):
-            validRes = True
+                # = If additional species went extinct, we need to find the consequences of those extinctions
 
-    # == Find invade post-eradication system 
+                s2idxErad = s2idxErad0
+                extnNames = [remSppName]
 
-    # Multiply by 1.5 to improve coverage of space
-    newMCol = 1.5 * np.random.random_sample(nErad) * newqCol
-    deltaInv, throwout = delta_spp_addition( MErad , newMCol )
+                while any(extns) and all(validnFncSurvivors(deltaErad, s2idxErad)):
+                    
+
+                    # Remove all species with deltaErad < -1, and recalculate delta to check for any further consequent extinctions
+
+                    extnIdxsErad = np.where(extns)[0] # Returns array of their indices
+                    extnNames += [s2idxErad.inv[i] for i in extnIdxsErad]
+                    s2idxErad, throwout = update_s2idx(s2idxOrig, extnNames)
+                    extnIdxsOrig = [s2idxOrig[sppName] for sppName in extnNames]
+
+                    deltaErad, MErad = delta_spp_removal(MOrig, extnIdxsOrig)
+
+                    extns = deltaErad < -1 # List of species that probably went extinct
+
+                # ~ Now have either run out of further extinctions or lost a species that should have survived
+
+                if all(validnFncSurvivors(deltaErad, s2idxErad)) and isStableM(MErad):
+
+                    validSur = True
+
+                    if all(validnFncResponses(deltaErad, s2idxErad)):
+
+                        validRes = True # EXITs here
+
+    # ~ Now have an MOrig that satisfies our constraints 
+
+    if recordTot:
+
+        # == Find invade post-eradication system 
+
+        # Multiply by 1.5 to improve coverage of space
+        newMCol = 1.5 * np.random.random_sample(lenNewqCol) * newqCol
+        deltaInv, throwout = delta_spp_addition( MErad0 , newMCol )
+
 
     # == Store response
 
+    # TODO: Expand this later when I have a handle on it
     response = list()
+
     if recordErad:
-        response += ['pos' if deltaErad[i] > 0 else 'neg' if deltaErad[i] < 0 else 'zer' for i in monitorEradIdxs]
+
+        for sppName in recordEradNames:
+            if sppName not in s2idxErad:
+                response.append('neg')
+            else:
+                if deltaErad[s2idxErad[sppName]] < 0:
+                    response.append('neg')
+                elif deltaErad[s2idxErad[sppName]] > 0:
+                    response.append('pos')
+                else:
+                    response.append('zer')
+    
     if recordEradExt:
-        response += ['ext' if d < -1 else 'suv' for d in deltaErad]
-    if recordInv:
-        response += ['pos' if d > 0 else 'neg' if d < 0 else 'zer' for d in deltaInv]
-    if recordInvExt:
-        response += ['ext' if d < -1 else 'suv' for d in deltaInv]
+        
+        for sppName in recordEradExtNames:
+            if sppName not in s2idxErad:
+                response.append('ext')
+            else:
+                response.append('suv')
+
     if recordTot:
-        deltaTot = (1+deltaErad) * (1+deltaInv) - 1
+
+        deltaTot = (1+deltaErad0) * (1+deltaInv) - 1
         response += ['pos' if d > 0 else 'neg' if d < 0 else 'zer' for d in deltaTot]
+
     response = tuple(response)
 
     if not(response in responses):
@@ -210,9 +257,6 @@ while (((t-t_last_updated) < search_terminator*t) | (t < t_min)) & (t < t_max):
 
     t += 1
 
-# = For printing to screen
-#clasErad = ['+' if deltaErad[i] > 0 else ('x' if deltaErad[i] < -1 else '-') for i in monitorEradIdxs]
-#print(list(zip(clasErad,monitorErad)))
 
 f.close()
 
@@ -223,5 +267,4 @@ f_info.write('Ran for t = ' + str(t) + ' random webs\n')
 f_info.write('Last new response found at t = ' + str(t_last_updated) + ' \n')
 f_info.close()
 
-f.close()
 
