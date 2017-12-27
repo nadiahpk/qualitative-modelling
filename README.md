@@ -1,39 +1,31 @@
-Project in progress.
+Main functions and scripts for projects using Boolean Analysis for Qualitative Modelling
 
-# Description
+# Main functions in ```qualmod```
 
-qualmod:
+1. ```qualmod.py```: A module containing Qualitative Modelling functions 
+2. ```findpcu.py```: A module containing Boolean analysis functions
 
-1. ```qualmod.py```: A python module containing Qualitative Modelling functions 
-2. ```web_SRI.py```: Python data structures defining the Santa Rosa
-Island community and the plausibility constraints
-3. ```santarosa.py```: A python script for searching the
-plausible parameter space for unique species-response combinations to
-invasion of the island scrub jay
+# Folders/projects in ```scripts```
 
-docs:
+## Scrub Jay reintroduction ```scrubjay```
 
-1. ```species_additions.ipynb```: Python notebook
-summarising the mathematical approach
+Investigating the reintroduction of Island Scrub Jay to Santa Rosa Island.
+Unpublished.
 
+The Python Notebook in ```docs/species_additions.ipynb``` summarises the mathematical approach.
 
-# Quick Start
+## Christmas Island rat and cat control ```townweb```
 
-In iPython:
+Investigating the control of cats and rats in the Town interaction network for Christmas Island.
+In submission.
 
-    %run santarosa.py
+## Reimplementation of Monte Carlo simulations for Macquarie Island ```rayfinal```
 
-This will produce a file ```uniques.csv``` listing the first
-10 unique species response combinations found.
+Code for a Monte Carlo simulation approach to Qualitative Modelling for a Macquarie Island ecosystem.
+In submission.
 
-Example contents of ```uniques.csv```:
+## Boolean Analysis for Macquarie Island ```macq/res2_final```
 
-    erad_manzanita,erad_understoryPlants,erad_willow,erad_fox,erad_scrubOak,erad_openCupNestingPasserines,erad_treesBig,erad_baldEagle,erad_raptorSmall,erad_raven,erad_skunk,erad_mouse,erad_gopherSnake,erad_goldenEagle,inv_manzanita,inv_understoryPlants,inv_willow,inv_fox,inv_scrubOak,inv_openCupNestingPasserines,inv_treesBig,inv_baldEagle,inv_raptorSmall,inv_raven,inv_skunk,inv_mouse,inv_gopherSnake,inv_goldenEagle
-    pos,neg,pos,neg,pos,pos,pos,pos,pos,neg,pos,neg,pos,neg,neg,neg,pos,pos,pos,pos,neg,pos,pos,neg,pos,neg,pos,neg
-    pos,neg,pos,pos,pos,neg,pos,neg,pos,pos,neg,pos,pos,pos,pos,pos,pos,pos,neg,neg,pos,neg,pos,pos,neg,neg,pos,neg
-    ...
+Code for a Boolean Analysis approach to Qualitative Modelling for a Macquarie Island ecosystem.
+In submission.
 
-The output from ```uniques.csv``` can be used with
-the apriori algorithm in ```R``` or the espresso algorithm
-from ```pyeda``` to find implication rules for species
-responses.
