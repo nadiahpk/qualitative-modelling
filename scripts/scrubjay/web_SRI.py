@@ -106,10 +106,13 @@ livestock_removal_responses_lax = {
     'scrubOak' : +1,
 }
 
-# Results of livestock removal, TODO double check these
+# Results of livestock removal, impose as many constraints
+# as we can, including those we know to be true (fog and
+# mosquito) from the exploration of the eradicationr
+# responses on the lax constraints above
 livestock_removal_responses_strict = {
     'manzanita' : +1,
-    'baldEagle': +1,
+    #'baldEagle': +1,
     'skunk': +1,
     'understoryPlants' : +1,
     'gopherSnake' : +1,
@@ -124,6 +127,7 @@ livestock_removal_responses_strict = {
     'mouse' : +1,
     'shrike' : -1,
     'goldenEagle' : -1,
+    'fogMoisture' : +1,
 }
 
 # = Survival after eradication of livestock
@@ -160,4 +164,16 @@ r_signs_strict = {
     'scrubOak': +1,
     'mouse': +1,
     'shrike': +1,
+}
+
+# = Total response
+
+# These response constraints are imposed because the point
+# of introducing the scrub jay was to create these
+# responses, and because we needed to reduce the number of
+# free variables
+
+inv_tot_strict = {
+    'treesBig': +1,
+    'scrubOak' : +1,
 }

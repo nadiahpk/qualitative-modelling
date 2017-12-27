@@ -21,10 +21,10 @@ remSppName = 'livestock'
 
 # Length of search
 search_terminator = 0.5
-#t_max = 1e5
-#t_min = 1e3
-t_max = 3
-t_min = 2
+t_max = 1e5
+t_min = 1e3
+#t_max = 3
+#t_min = 2
 
 # A list of species to remove from the full web to create the post-invasion web
 remFromFullWeb = ['precipitation', 'westNileVirus', 'rats']

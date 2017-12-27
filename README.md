@@ -4,7 +4,7 @@ Project in progress.
 
 qualmod:
 
-1. ```qualmod.py```: A python module containing QM functions 
+1. ```qualmod.py```: A python module containing Qualitative Modelling functions 
 2. ```web_SRI.py```: Python data structures defining the Santa Rosa
 Island community and the plausibility constraints
 3. ```santarosa.py```: A python script for searching the

@@ -1,0 +1,61 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	negrabbits_albatrosses [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; albatrosses + >;fillcolor = white;];
+	negrabbits_prions [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; prions + >;fillcolor = white;];
+	negrabbits_skuas [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; skuas + >;fillcolor = white;];
+	posrabbits_penguins [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; penguins &#8210; >;fillcolor = gray;];
+	posrabbits_skuas [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; skuas &#8210; >;fillcolor = gray;];
+	negrabbits_surfaceSeabirds [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; surface-nest seabirds + >;fillcolor = white;];
+	posrabbits_macroInverts [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; macroinvertebrates &#8210; >;fillcolor = gray;];
+	posrabbits_petrels [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; petrels &#8210; >;fillcolor = gray;];
+	negrabbits_mice [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; mice + >;fillcolor = white;];
+	posrabbits_redpolls [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; redpolls &#8210; >;fillcolor = gray;];
+	posrabbits_surfaceSeabirds [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; surface-nest seabirds &#8210; >;fillcolor = gray;];
+	or2 [shape = circle;label = or;fillcolor = white;];
+	negrabbits_herbfield [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; herbfield + >;fillcolor = white;];
+	negrabbits_redpolls [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; redpolls + >;fillcolor = white;];
+	negrabbits_petrels [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; petrels + >;fillcolor = white;];
+	negrabbits_macroInverts [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; macroinvertebrates + >;fillcolor = white;];
+	True [shape = circle;label = True;fillcolor = white;];
+	or0 [shape = circle;label = or;fillcolor = white;];
+	negrabbits_burrowSeabirds [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; burrow-nest seabirds + >;fillcolor = white;];
+	negrabbits_penguins [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; penguins + >;fillcolor = white;];
+	posrabbits_rats [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; rats &#8210; >;fillcolor = gray;];
+	or1 [shape = circle;label = or;fillcolor = white;];
+	posrabbits_mice [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; mice &#8210; >;fillcolor = gray;];
+	posrabbits_prions [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; prions &#8210; >;fillcolor = gray;];
+	negrabbits_rats [shape = box;label = < <font point-size="10">&darr; rabbits</font><br align="left"/> &nbsp; &nbsp; rats + >;fillcolor = white;];
+
+negrabbits_prions->posrabbits_skuas;
+negrabbits_skuas->posrabbits_prions;
+negrabbits_skuas->posrabbits_penguins;
+posrabbits_skuas->negrabbits_petrels;
+posrabbits_skuas->negrabbits_prions;
+negrabbits_surfaceSeabirds->posrabbits_macroInverts;
+negrabbits_surfaceSeabirds->posrabbits_rats;
+negrabbits_surfaceSeabirds->or1;
+posrabbits_petrels->negrabbits_skuas;
+posrabbits_redpolls->posrabbits_macroInverts;
+posrabbits_redpolls->or0;
+posrabbits_surfaceSeabirds->negrabbits_rats;
+or2->negrabbits_redpolls;
+or2->posrabbits_surfaceSeabirds;
+negrabbits_macroInverts->negrabbits_redpolls;
+negrabbits_macroInverts->posrabbits_surfaceSeabirds;
+True->negrabbits_albatrosses;
+True->negrabbits_burrowSeabirds;
+True->negrabbits_herbfield;
+or0->negrabbits_mice;
+or0->posrabbits_surfaceSeabirds;
+negrabbits_penguins->posrabbits_skuas;
+posrabbits_rats->negrabbits_surfaceSeabirds;
+or1->negrabbits_redpolls;
+or1->negrabbits_mice;
+posrabbits_mice->or2;
+posrabbits_prions->negrabbits_skuas;
+negrabbits_rats->posrabbits_surfaceSeabirds;
+
+}
