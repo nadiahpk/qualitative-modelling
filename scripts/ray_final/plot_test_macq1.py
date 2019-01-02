@@ -16,6 +16,7 @@ spp_responses_to_plot = [ 'S neg albatrosses', 'S neg prions', 'S neg burrowSeab
 
 # for the body of the publication I want plots of these only
 spp_responses_to_plot_pubn = [ 'S neg prions', 'S neg penguins', 'S neg redpolls', 'S neg skuas']
+#spp_responses_to_plot_pubn = [ 'S neg penguins', 'S neg macroInverts', 'S neg redpolls', 'S neg skuas']
 
 
 
@@ -90,7 +91,7 @@ for spp_response in spp_responses_to_plot:
 
 # Create each species-responses plots
 
-if False:
+if True:
 
     for spp_response, propn_pos in results_by_spp_response.items():
     #spp_response = 'S neg penguins'
@@ -110,9 +111,10 @@ if False:
         other_ax.scatter( x_vals, y_vals, color='black' )
         other_ax.set_ylabel( y_label )
         other_ax.set_ylim( (-0.05,1.05) )
+        other_ax.set_yticks( (0, 0.25, 0.5, 0.75, 1) )
         other_ax.set_xlabel( ' ' )
         other_ax.set_xticks(x_vals)
-        other_ax.set_xticklabels(experiment_plot_labels)
+        other_ax.set_xticklabels( ('baseline', 'test 1', 'test 2') )
         other_ax.grid(True)
         other_ax.set_axisbelow(True)
 
@@ -120,7 +122,7 @@ if False:
 
         stability_ax = plt.subplot(gs[1])
         stability_ax.scatter( x_vals, y_vals, color='black' )
-        stability_ax.set_xlabel( ' expected magnitude of consumer diagonal element\n test 3 ' )
+        stability_ax.set_xlabel( ' expected magnitude of consumer diagonal element, test 3 ' )
         stability_ax.set_ylim( (-0.05,1.05) )
         stability_ax.tick_params(labelleft='off', left='off', right='on')
         stability_ax.grid(True)
@@ -133,7 +135,7 @@ if False:
 
 # Create the average number of rejected draws per accepted community matrix plot
 
-if False:
+if True:
 
     f, (other_ax, stability_ax) = plt.subplots( 1, 2, sharey=True, figsize=(9,2.5) )
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 3])
@@ -173,33 +175,45 @@ if False:
 
 if True:
 
-    no_rows = len(spp_responses_to_plot_pubn) + 1
-    f, ax = plt.subplots( no_rows, 2, figsize=(9,no_rows*2.0) )
-    gs = gridspec.GridSpec(no_rows, 2, width_ratios=[1, 3])
+    if False:
 
-    # The rejections count plot
+        no_rows = len(spp_responses_to_plot_pubn) + 1
+        f, ax = plt.subplots( no_rows, 2, figsize=(9,no_rows*2.0) )
+        gs = gridspec.GridSpec(no_rows, 2, width_ratios=[1, 3])
 
-    y_label = 'avg. no rejected draws\nper plausible matrix'
+        # The rejections count plot
 
-    x_vals = list(range(len(experiments_to_plot)))
-    y_vals = [ rejections_by_experiment[experiment_name] for experiment_name in experiment_names ]
+        y_label = 'avg. no rejected draws\nper plausible matrix'
 
-    ax[0][0] = plt.subplot(gs[0,0])
-    ax[0][0].scatter( x_vals, y_vals, color='red' )
-    ax[0][0].set_ylabel( y_label, labelpad=15 )
-    ax[0][0].set_yscale('log')
-    ax[0][0].grid(True)
-    ax[0][0].set_axisbelow(True)
-    ax[0][0].tick_params(labelbottom='off')
+        x_vals = list(range(len(experiments_to_plot)))
+        y_vals = [ rejections_by_experiment[experiment_name] for experiment_name in experiment_names ]
 
-    x_vals, y_vals = zip(*rejections_by_experiment['Difficult stability'])
+        ax[0][0] = plt.subplot(gs[0,0])
+        ax[0][0].scatter( x_vals, y_vals, color='red' )
+        ax[0][0].set_ylabel( y_label, labelpad=15 )
+        ax[0][0].set_yscale('log')
+        ax[0][0].grid(True)
+        ax[0][0].set_axisbelow(True)
+        ax[0][0].tick_params(labelbottom='off')
 
-    ax[0][1] = plt.subplot(gs[0,1], sharey=ax[0][0])
-    ax[0][1].scatter( x_vals, y_vals, color='red' )
-    ax[0][1].set_yscale('log')
-    ax[0][1].tick_params(labelleft='off', labelbottom='off', left='off', right='on')
-    ax[0][1].grid(True)
-    ax[0][1].set_axisbelow(True)
+        x_vals, y_vals = zip(*rejections_by_experiment['Difficult stability'])
+
+        ax[0][1] = plt.subplot(gs[0,1], sharey=ax[0][0])
+        ax[0][1].scatter( x_vals, y_vals, color='red' )
+        ax[0][1].set_yscale('log')
+        ax[0][1].tick_params(labelleft='off', labelbottom='off', left='off', right='on')
+        ax[0][1].grid(True)
+        ax[0][1].set_axisbelow(True)
+
+        j = 1
+
+    else:
+
+        no_rows = len(spp_responses_to_plot_pubn)
+        f, ax = plt.subplots( no_rows, 2, figsize=(9,no_rows*2.0) )
+        gs = gridspec.GridSpec(no_rows, 2, width_ratios=[1, 3])
+
+        j = 0
 
 
     # Each of the species responses
@@ -214,22 +228,22 @@ if True:
         x_vals = list(range(len(experiments_to_plot)))
         y_vals = [ propn_pos[experiment_name] for experiment_name in experiment_names ]
 
-        ax[idx+1][0] = plt.subplot(gs[idx+1,0], sharex=ax[0][0])
-        ax[idx+1][0].scatter( x_vals, y_vals, color='black' )
-        ax[idx+1][0].set_ylabel( y_label )
-        ax[idx+1][0].set_ylim( (-0.05,1.05) )
-        ax[idx+1][0].grid(True)
-        ax[idx+1][0].set_axisbelow(True)
-        ax[idx+1][0].tick_params(labelbottom='off')
+        ax[idx+j][0] = plt.subplot(gs[idx+j,0], sharex=ax[0][0])
+        ax[idx+j][0].scatter( x_vals, y_vals, color='black' )
+        ax[idx+j][0].set_ylabel( '\n\n' + y_label )
+        ax[idx+j][0].set_ylim( (-0.05,1.05) )
+        ax[idx+j][0].grid(True)
+        ax[idx+j][0].set_axisbelow(True)
+        ax[idx+j][0].tick_params(labelbottom='off')
 
         x_vals, y_vals = zip(*propn_pos['Difficult stability'])
 
-        ax[idx+1][1] = plt.subplot(gs[idx+1,1], sharex=ax[0][1], sharey=ax[idx+1][0])
-        ax[idx+1][1].scatter( x_vals, y_vals, color='black' )
-        ax[idx+1][1].set_ylim( (-0.05,1.05) )
-        ax[idx+1][1].tick_params(labelleft='off', left='off', labelbottom='off', right='on')
-        ax[idx+1][1].grid(True)
-        ax[idx+1][1].set_axisbelow(True)
+        ax[idx+j][1] = plt.subplot(gs[idx+j,1], sharex=ax[0][1], sharey=ax[idx+j][0])
+        ax[idx+j][1].scatter( x_vals, y_vals, color='black' )
+        ax[idx+j][1].set_ylim( (-0.05,1.05) )
+        ax[idx+j][1].tick_params(labelleft='off', left='off', labelbottom='off', right='on')
+        ax[idx+j][1].grid(True)
+        ax[idx+j][1].set_axisbelow(True)
 
     # put the labels back on the last x-axis
     ax[-1][0].set_xlabel( ' ' )
@@ -237,11 +251,11 @@ if True:
     ax[-1][0].set_xticks(x_vals)
     ax[-1][0].set_xticklabels(experiment_plot_labels)
     ax[-1][0].tick_params(labelbottom='on')
-    ax[-1][1].set_xlabel( ' expected magnitude of consumer diagonal element\n\n test 3 ' )
+    ax[-1][1].set_xlabel( ' expected magnitude of consumer diagonal element\n\n "strength" of stability constraint, test 3 ' )
     ax[-1][1].tick_params(labelleft='off', left='off', labelbottom='on', right='on')
 
     f.text(0.02, 0.45, 'proportion of positive responses', ha='center', va='center', rotation='vertical')
-    f.text(0.5, 0.01, 'parameter space sampling method', ha='center', va='center')
+    f.text(0.5, 0.01, '', ha='center', va='center')
 
     '''
     f.add_subplot(111, frameon=False)

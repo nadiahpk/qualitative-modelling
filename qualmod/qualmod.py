@@ -98,11 +98,9 @@ def initialise_foodweb(positive_edges_dict, negative_edges_dict):
     >>> sorted(G.edges())
     [('species 1', 'species 2'), ('species 2', 'species 1'), ('species 2', 'species 2')]
 
-    >>> G.edge['species 1'].keys()
-    dict_keys(['species 2'])
-    >>> G.edge['species 1']['species 2']['color']
+    >>> G['species 1']['species 2']['color']
     'red'
-    >>> G.edge['species 1']['species 2']['sign']
+    >>> G['species 1']['species 2']['sign']
     -1
     """
 
@@ -164,7 +162,7 @@ def qualitative_community_matrix(G, spp_to_idx=None):
 
     # Construction of the qualitative community matrix
     Mq = np.zeros(shape=(order,order))
-    for (giver, recipient, data) in G.edges_iter(data=True):
+    for (giver, recipient, data) in G.edges(data=True):
         row = spp_to_idx.get(recipient)
         col = spp_to_idx.get(giver)
         Mq[row][col] = data['sign']
@@ -187,7 +185,7 @@ def draw_foodweb(G, f_name = 'web.dot'):
     GG = G.to_undirected()
 
 
-    for (u, v) in GG.edges_iter():
+    for (u, v) in GG.edges():
 
         # Aiming for this kind of thing
         # e.g. manzanita -> manzanita   [color=red, weight=-1];
@@ -199,7 +197,7 @@ def draw_foodweb(G, f_name = 'web.dot'):
             # print('u: ' + u + ', v:' + v)
             if G[u][v]['sign'] == 1:
                 if G.has_edge(v, u):
-                    if G.edge[v][u]['sign'] == -1:
+                    if G[v][u]['sign'] == -1:
                         wstr = '\"' + u + '\" -> ' + '\"' + v + '\" [arrowhead=vee, arrowtail=dot, color=\"#000099\"];\n'
                     else:
                         wstr = '\"' + u + '\" -> ' + '\"' + v + '\" [arrowhead=vee, arrowtail=vee, color=\"#006600\"];\n'
@@ -210,7 +208,7 @@ def draw_foodweb(G, f_name = 'web.dot'):
             if G[u][v]['sign'] == -1:
                 if u != v:
                     if G.has_edge(v,u):
-                        if G.edge[v][u]['sign'] == -1:
+                        if G[v][u]['sign'] == -1:
                             wstr = '\"' + u + '\" -> ' + '\"' + v + '\" [arrowhead=dot, arrowtail=dot, color=red];\n'
                         else:
                             wstr = '\"' + u + '\" -> ' + '\"' + v + '\" [arrowhead=dot, arrowtail=vee, color=\"#000099\"];\n'

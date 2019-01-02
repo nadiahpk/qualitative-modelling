@@ -201,6 +201,24 @@ def uniformAr(Mq):
 
     return A, r
 
+def uniformArWithrconstraint(Mq):
+    '''
+    More complicated LV coefficient allocation
+    If species is basal r_i > 0 else r_i < 0
+    Returns A, r
+    '''
+
+    sz = Mq.shape[0]
+
+    # = Create r =
+    basal = [ all(row <= 0) for row in Mq ] # find basal species
+    r = np.array([ np.random.random() if b else -np.random.random() for b in basal ])
+
+    # = Create A =
+    A = np.multiply(np.random.random_sample( Mq.shape ), Mq)
+
+    return A, r
+
 # == 2.2: Possible validation constraints on the LV ==
 
 def isFeasAr(A,r):
@@ -240,9 +258,9 @@ validationFunc = lambda S: all( np.sign( S[ s2idx[validation_spp] , s2idx[data.c
 # Define the experiments. Uncomment the test that you would like to run.
 
 experiments = {
-        'Raymond': ( 'sampling M',
-            lambda Mq: raymondM(Mq),
-            lambda M, S: all([ validationFunc(S), isStableM(M) ]) ),
+        #'Raymond': ( 'sampling M',
+            #lambda Mq: raymondM(Mq),
+            #lambda M, S: all([ validationFunc(S), isStableM(M) ]) ),
         #'Uniform M': ( 'sampling M',
             #lambda Mq: uniformM(Mq),
             #lambda M, S: all([ validationFunc(S), isStableM(M) ]) ),
@@ -250,6 +268,10 @@ experiments = {
             #lambda Mq: uniformAr(Mq),
             #lambda A, r: isFeasAr(A,r),
             #lambda M, S: all([ validationFunc(S), isStableM(M) ]) ),
+        'Uniform LV constaint on r': ( 'sampling LV',
+            lambda Mq: uniformArWithrconstraint(Mq),
+            lambda A, r: isFeasAr(A,r),
+            lambda M, S: all([ validationFunc(S), isStableM(M) ]) ),
         #'Efficiency M': ('sampling M',
             #lambda Mq: efficiencyM(Mq, 10),
             #lambda M, S: all([ validationFunc(S), isStableM(M) ]) ),
@@ -318,7 +340,7 @@ experiments = {
 
 # Count the species responses for each experiment
 
-no_valid_max = 10 # sample size used
+no_valid_max = 100 # sample size used NOTE
 
 # Storage
 cntPos = dict()
