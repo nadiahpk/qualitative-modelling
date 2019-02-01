@@ -1,0 +1,49 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	posrats_mice [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; mice + >;];
+	and1 [shape = circle;fillcolor = white;label = "&";];
+	posrats_rabbits [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; rabbits + >;];
+	negrats_tussock [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock &#8210; >;];
+	and2 [shape = circle;fillcolor = white;label = "&";];
+	negrats_redpolls [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; redpolls &#8210; >;];
+	and3 [shape = circle;fillcolor = white;label = "&";];
+	posrats_macroInverts [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts + >;];
+	or1 [shape = circle;fillcolor = white;label = or;];
+	negrats_petrels [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; petrels &#8210; >;];
+	negrats_macroInverts [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts &#8210; >;];
+	posrats_albatrosses [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; albatrosses + >;];
+	or2 [shape = circle;fillcolor = white;label = or;];
+	negrats_burrowSeabirds [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; burrowSeabirds &#8210; >;];
+	or3 [shape = circle;fillcolor = white;label = or;];
+	posrats_skuas [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas + >;];
+
+posrats_mice->and1;
+posrats_mice->and2;
+posrats_mice->and3;
+posrats_mice->or1;
+posrats_mice->or2;
+posrats_mice->or3;
+and1->negrats_tussock;
+posrats_rabbits->and1;
+posrats_rabbits->and2;
+posrats_rabbits->and3;
+and2->negrats_redpolls;
+and3->posrats_macroInverts;
+or1->negrats_petrels;
+or1->negrats_macroInverts;
+or1->negrats_redpolls;
+or1->posrats_albatrosses;
+or2->negrats_petrels;
+or2->negrats_burrowSeabirds;
+or2->negrats_redpolls;
+or2->posrats_albatrosses;
+or3->negrats_burrowSeabirds;
+or3->negrats_macroInverts;
+or3->negrats_redpolls;
+or3->posrats_albatrosses;
+or3->posrats_skuas;
+
+}

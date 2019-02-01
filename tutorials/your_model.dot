@@ -1,0 +1,32 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	negint_qua [shape = box;fillcolor = gray;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; environmental flow &#8210; >;];
+	negint_lei [shape = box;fillcolor = gray;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; leisure use of river &#8210; >;];
+	posint_eng [shape = box;fillcolor = white;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; engagement of stakeholders + >;];
+	and1 [shape = circle;fillcolor = white;label = "&";];
+	posint_sat [shape = box;fillcolor = white;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; satisfaction with water authority + >;];
+	posint_pri [shape = box;fillcolor = white;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; water price + >;];
+	and2 [shape = circle;fillcolor = white;label = "&";];
+	negint_sat [shape = box;fillcolor = gray;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; satisfaction with water authority &#8210; >;];
+	and3 [shape = circle;fillcolor = white;label = "&";];
+	negint_eng [shape = box;fillcolor = gray;label = < <font point-size="10">&#10148; intervention</font><br align="left"/> &nbsp; &nbsp; engagement of stakeholders &#8210; >;];
+	and4 [shape = circle;fillcolor = white;label = "&";];
+
+negint_qua->negint_lei;
+negint_qua->and1;
+negint_qua->and2;
+posint_eng->and1;
+posint_eng->and4;
+and1->posint_sat;
+posint_pri->and2;
+posint_pri->and3;
+posint_pri->and4;
+and2->negint_sat;
+and3->negint_sat;
+negint_eng->and3;
+and4->posint_sat;
+
+}

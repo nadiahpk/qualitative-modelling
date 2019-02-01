@@ -1,0 +1,75 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	or1 [shape = circle;fillcolor = white;label = or;];
+	negrats_tussock [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock &#8210; >;];
+	negrats_rabbits [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; rabbits &#8210; >;];
+	posrats_mice [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; mice + >;];
+	or2 [shape = circle;fillcolor = white;label = or;];
+	posrats_penguins [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; penguins + >;];
+	posrats_skuas [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas + >;];
+	posrats_tussock [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock + >;];
+	True [shape = circle;fillcolor = white;];
+	or3 [shape = circle;fillcolor = white;label = or;];
+	negrats_skuas [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas &#8210; >;];
+	negrats_petrels [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; petrels &#8210; >;];
+	or4 [shape = circle;fillcolor = white;label = or;];
+	negrats_redpolls [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; redpolls &#8210; >;];
+	or5 [shape = circle;fillcolor = white;label = or;];
+	posrats_petrels [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; petrels + >;];
+	or6 [shape = circle;fillcolor = white;label = or;];
+	posrats_macroInverts [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts + >;];
+	or7 [shape = circle;fillcolor = white;label = or;];
+	negrats_penguins [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; penguins &#8210; >;];
+	or8 [shape = circle;fillcolor = white;label = or;];
+	negrats_macroInverts [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts &#8210; >;];
+	posrats_albatrosses [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; albatrosses + >;];
+	or9 [shape = circle;fillcolor = white;label = or;];
+	negrats_burrowSeabirds [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; burrowSeabirds &#8210; >;];
+	or10 [shape = circle;fillcolor = white;label = or;];
+
+or1->negrats_tussock;
+or1->negrats_rabbits;
+posrats_mice->or1;
+posrats_mice->or4;
+posrats_mice->or6;
+posrats_mice->or8;
+posrats_mice->or9;
+posrats_mice->or10;
+or2->posrats_penguins;
+or2->posrats_skuas;
+or2->posrats_tussock;
+True->or2;
+True->or3;
+True->or5;
+True->or7;
+or3->negrats_skuas;
+or3->negrats_petrels;
+or3->posrats_tussock;
+or4->negrats_redpolls;
+or4->negrats_rabbits;
+or5->negrats_tussock;
+or5->posrats_petrels;
+or5->posrats_skuas;
+or6->posrats_macroInverts;
+or6->negrats_rabbits;
+or7->negrats_tussock;
+or7->negrats_skuas;
+or7->negrats_penguins;
+or8->negrats_petrels;
+or8->negrats_macroInverts;
+or8->negrats_redpolls;
+or8->posrats_albatrosses;
+or9->negrats_petrels;
+or9->negrats_burrowSeabirds;
+or9->negrats_redpolls;
+or9->posrats_albatrosses;
+or10->negrats_burrowSeabirds;
+or10->negrats_macroInverts;
+or10->negrats_redpolls;
+or10->posrats_albatrosses;
+or10->posrats_skuas;
+
+}

@@ -4,6 +4,8 @@ from pyeda.boolalg.expr import exprvar, And, Or, Not
 from bidict import bidict
 from itertools import compress
 from pyeda.inter import espresso_exprs
+import networkx as nx
+import os
 
 def int2boolset(i, x):
     """
@@ -132,8 +134,6 @@ def boolexpr2RespvalList(boolexpr, x2s):
 
 def getUnobservedInts(fInName, desiredResponsesMask, boolLen, str4true, subsetMask=None, subsetResponses=None):
     
-    # TODO: change this so it accepts the file iterator instead
-
     # Open the csv and get our row iterator
     fIn = open(fInName)
     csv_f = csv.reader(fIn)
@@ -281,3 +281,340 @@ def general_pcu_search(fInName, str4true, str4false, desiredResponses=None, subs
     fOut.write(']\n')
 
     fOut.close()
+
+# ----
+
+def draw_implication_network(PCUList, fName='implication_network', niceNames = None, controlSymbol = None):
+    '''
+    Draws the simplest kind of implication network, where every logical
+    implication statement in its single-antecedent form is included.
+    '''
+
+    # two control symbols possible, a down-arrow or a minus
+    if not controlSymbol: # default is a minus
+
+            controlSymbol = '&#8210; '
+
+    else:
+
+        if controlSymbol == 'minus':
+            controlSymbol = '&#8210; '
+        elif controlSymbol == 'downarrow':
+            controlSymbol = '&darr; '
+
+    andCounter = 0
+    orCounter = 0
+    edgesList = list()
+
+    for PCU in PCUList:
+
+        # make a special type of figure that shows both
+        # directions of implications; this works well in this
+        # specific example because the outcomes are related in a very
+        # simple way
+        for p in PCU:
+
+            if len(PCU) == 1:
+
+                ante = 'True'
+
+                # consequents need to be negated
+                if p[:3] == 'pos':
+                    notpp = 'neg' + p[3:]
+                else:
+                    notpp = 'pos' + p[3:]
+
+                consList = [notpp]
+
+            else:
+
+                ante = p # The antecedent is p
+                consList = list()
+
+                # list of p to be turned into consequents
+                qs = list(filter(lambda x: x != p, PCU))
+
+                # consequents need to be negated
+                for q in qs:
+
+                    if q[:3] == 'pos':
+                        notqq = 'neg' + q[3:]
+                    else:
+                        notqq = 'pos' + q[3:]
+
+                    consList.append(notqq)
+
+            # Now create the edges list
+
+            if len(consList) == 1:
+
+                # The antecedent is linked to that single response
+                edgesList.append( (ante, consList[0]) )
+
+            else:
+
+                # The antecedent is linked to the orNode
+                orNode = 'or' + str(orCounter)
+                edgesList.append( (ante, orNode) )
+                orCounter += 1 # increment for next time
+
+                # Each consequent must be linked from the orNode
+                for c in consList:
+                    edgesList.append( (orNode, c) )
+
+
+    G = nx.DiGraph()
+    G.add_edges_from(edgesList)
+
+    # Each node needs a label, a shape, and may need a style
+
+    for node, att in G.nodes(data=True):
+
+        if node[:3] == 'pos' or node[:3] == 'neg': # Response node
+
+            att['shape'] = 'box'
+            
+            # fill colour of node
+            if node[:3] == 'pos':
+                respSign = '+'
+                att['fillcolor'] = 'white'
+            else:
+                respSign = "&#8210;"
+                att['fillcolor'] = 'gray' # Negative responses are filled
+
+            # label of node
+            
+            contSpp, respSpp = node[3:].split('_') # the species identifying names are in the node labels
+            
+            if niceNames is None: # convert to nice names if available
+                
+                contSppNiceName = contSpp
+                respSppNiceName = respSpp
+                
+            else:
+                
+                contSppNiceName = niceNames[contSpp]
+                respSppNiceName = niceNames[respSpp]
+                
+                
+            att['label'] = '< <font point-size="10">' + controlSymbol + contSppNiceName + '</font>' \
+                           + '<br align="left"/> &nbsp; &nbsp; ' + respSppNiceName + ' ' + respSign + ' >'
+            
+
+        else: # Boolean operator node
+
+            att['shape'] = 'circle'; att['fillcolor'] = 'white';
+            if node[:2] == 'or':
+                att['label'] = 'or'
+
+    # Write dot file
+    f = open(fName + '.dot','w')
+
+    # Preamble
+    f.write('digraph {\n')
+    f.write('\n')
+    f.write('\tnode[style="rounded,filled", width=0, margin=0];\n\n')
+    f.write('\n')
+
+    # Write each node's qualities
+    for node, att in G.nodes(data=True):
+
+        f.write('\t' + node + ' [')
+
+        for k, v in att.items():
+            f.write(k + ' = ' + v + ';')
+
+        f.write('];\n')
+    f.write('\n')
+
+    # Write each edge
+    for edge in G.edges():
+
+        f.write(edge[0] + '->' + edge[1] + ';\n')
+    f.write('\n')
+
+    # Closing bracket
+    f.write('}')
+
+    f.close()
+
+    # Run pdf maker
+    os.system('dot -Tpdf ' + fName + '.dot > ' + fName + '.pdf')
+
+    print(fName + '.pdf' + ' has been created')
+
+def draw_implication_network2(PCUList, alwaysAnteList, fName='implication_network', niceNames = None, controlSymbol = None):
+    '''
+    Draws an implication network where certain responses are always treated as the antecedent (alwaysAnteList)
+    '''
+
+    # two control symbols possible, a down-arrow or a minus
+    if not controlSymbol: # default is a minus
+
+            controlSymbol = '&#8210; '
+
+    else:
+
+        if controlSymbol == 'minus':
+            controlSymbol = '&#8210; '
+        elif controlSymbol == 'downarrow':
+            controlSymbol = '&darr; '
+
+    andCounter = 0
+    orCounter = 0
+    edgesList = list()
+
+    for PCU in PCUList:
+
+        # split into a list of antecedents and consequents
+        anteList = [ p for p in PCU if p in alwaysAnteList ]
+        consList_raw = [ p for p in PCU if p not in alwaysAnteList ]
+
+        # the consequents need to be negated
+        consList = list()
+        for q in consList_raw:
+
+            if q[:3] == 'pos':
+                notqq = 'neg' + q[3:]
+            else:
+                notqq = 'pos' + q[3:]
+
+            consList.append(notqq)
+
+        # if there are no antecedents, the consequents will be attached to the True node
+        if not anteList:
+            anteList.append('True')
+
+        # if there are no consequents, the antecedents will be attached to the False node
+        if not consList:
+            consList.append('False')
+
+        # identify the upper and lower node, which depends on how many antecedents and consequents
+
+        # do upper and antecedents
+
+        if len(anteList) < 2:
+
+            upperNode = anteList[0]
+
+        else:
+
+            # the upper node is an And node
+            andCounter += 1
+            upperNode = 'and' + str(andCounter)
+
+            # and every antecedent has an edge with this And node
+            for p in anteList:
+                edgesList.append( (p, upperNode) )
+
+        # do lower and consequents
+
+        if len(consList) < 2:
+
+            lowerNode = consList[0]
+
+        else:
+
+            # the lower node is an Or node
+            orCounter += 1
+            lowerNode = 'or' + str(orCounter)
+
+            # and every consequent has an edge with this Or node
+            for q in consList:
+                edgesList.append( (lowerNode, q) )
+
+        # link the upper and lower node
+        edgesList.append( (upperNode, lowerNode) )
+
+    G = nx.DiGraph()
+    G.add_edges_from(edgesList)
+
+    # Each node needs a label, a shape, and may need a style
+
+    for node, att in G.nodes(data=True):
+
+        if node[:3] == 'pos' or node[:3] == 'neg': # Response node
+
+            att['shape'] = 'box'
+            
+            # fill colour of node
+            if node[:3] == 'pos':
+                respSign = '+'
+                att['fillcolor'] = 'white'
+            else:
+                respSign = "&#8210;"
+                att['fillcolor'] = 'gray' # Negative responses are filled
+
+            # label of node
+            
+            contSpp, respSpp = node[3:].split('_') # the species identifying names are in the node labels
+            
+            if niceNames is None: # convert to nice names if available
+                
+                contSppNiceName = contSpp
+                respSppNiceName = respSpp
+                
+            else:
+                
+                contSppNiceName = niceNames[contSpp]
+                respSppNiceName = niceNames[respSpp]
+                
+                
+            if controlSymbol == 'no_control': # a bit of a hack so I can do the "raining -> streets" wet example for the appendix
+
+                if node[:3] == 'pos': 
+                    prefix = ''
+                else:
+                    prefix = 'not'
+
+                att['label'] = '" ' + prefix + ' ' + respSppNiceName + ' "'
+
+            else:
+
+                att['label'] = '< <font point-size="10">' + controlSymbol + contSppNiceName + '</font>' \
+                               + '<br align="left"/> &nbsp; &nbsp; ' + respSppNiceName + ' ' + respSign + ' >'
+            
+
+        else: # Boolean operator node
+
+            att['shape'] = 'circle'; att['fillcolor'] = 'white';
+            if node[:2] == 'or':
+                att['label'] = 'or'
+            if node[:3] == 'and':
+                att['label'] = '"&"'
+
+    # Write dot file
+    f = open(fName + '.dot','w')
+
+    # Preamble
+    f.write('digraph {\n')
+    f.write('\n')
+    f.write('\tnode[style="rounded,filled", width=0, margin=0];\n\n')
+    f.write('\n')
+
+    # Write each node's qualities
+    for node, att in G.nodes(data=True):
+
+        f.write('\t' + node + ' [')
+
+        for k, v in att.items():
+            f.write(k + ' = ' + v + ';')
+
+        f.write('];\n')
+    f.write('\n')
+
+    # Write each edge
+    for edge in G.edges():
+
+        f.write(edge[0] + '->' + edge[1] + ';\n')
+    f.write('\n')
+
+    # Closing bracket
+    f.write('}')
+
+    f.close()
+
+    # Run pdf maker
+    os.system('dot -Tpdf ' + fName + '.dot > ' + fName + '.pdf')
+
+    print(fName + '.pdf' + ' has been created')

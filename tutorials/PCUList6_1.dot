@@ -1,0 +1,32 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	or1 [shape = circle;fillcolor = white;label = or;];
+	posrats_penguins [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; penguins + >;];
+	posrats_skuas [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas + >;];
+	negrats_tussock [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock &#8210; >;];
+	or2 [shape = circle;fillcolor = white;label = or;];
+	negrats_skuas [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas &#8210; >;];
+	negrats_petrels [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; petrels &#8210; >;];
+	or3 [shape = circle;fillcolor = white;label = or;];
+	posrats_petrels [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; petrels + >;];
+	posrats_tussock [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock + >;];
+	or4 [shape = circle;fillcolor = white;label = or;];
+	negrats_penguins [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; penguins &#8210; >;];
+
+or1->posrats_penguins;
+or1->posrats_skuas;
+negrats_tussock->or1;
+negrats_tussock->or2;
+or2->negrats_skuas;
+or2->negrats_petrels;
+or3->posrats_petrels;
+or3->posrats_skuas;
+posrats_tussock->or3;
+posrats_tussock->or4;
+or4->negrats_skuas;
+or4->negrats_penguins;
+
+}

@@ -1,0 +1,7 @@
+\BOOKMARK [1][-]{section.1}{Weighted-predictions matrix}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Obtain the weighted-predictions matrix}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{Step 1: Create the qualitative community matrix}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Step 2: Find the adjoint of the qualitative community matrix}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.3}{Step 3: Find the absolute feedback matrix from the binary community matrix}{subsection.1.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.1.4}{Step 4: Use the adjoint of the qualitative community matrix and the absolute feedback matrix to find the weighted-predictions matrix}{subsection.1.1}% 6
+\BOOKMARK [2][-]{subsection.1.2}{Interpret the weighted predictions matrix}{section.1}% 7

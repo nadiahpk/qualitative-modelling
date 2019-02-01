@@ -1,0 +1,34 @@
+digraph {
+edge [dir=both];
+"prions" -> "skuas" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"grassland" -> "prions" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"skuas" -> "penguins" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"skuas" -> "burrowSeabirds" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"skuas" -> "rabbits" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"tussock" -> "skuas" [arrowhead=dot, arrowtail=none, color="#990033"];
+"tussock" -> "petrels" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"tussock" -> "mice" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"tussock" -> "rats" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"tussock" -> "burrowSeabirds" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"tussock" -> "rabbits" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"tussock" -> "macroInverts" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"tussock" -> "albatrosses" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"tussock" -> "redpolls" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"penguins" -> "petrels" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"grassland" -> "petrels" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"mice" -> "macroInverts" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"rats" -> "mice" [arrowhead=dot, arrowtail=none, color="#990033"];
+"herbfield" -> "mice" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"rats" -> "surfaceSeabirds" [arrowhead=dot, arrowtail=none, color="#990033"];
+"rats" -> "macroInverts" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"herbfield" -> "rats" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"rabbits" -> "burrowSeabirds" [arrowhead=dot, arrowtail=none, color="#990033"];
+"rabbits" -> "herbfield" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"grassland" -> "rabbits" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"macroInverts" -> "redpolls" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"herbfield" -> "macroInverts" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"grassland" -> "macroInverts" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"herbfield" -> "redpolls" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"grassland" -> "redpolls" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"herbfield" -> "albatrosses" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+}

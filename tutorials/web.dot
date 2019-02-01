@@ -1,0 +1,8 @@
+digraph {
+edge [dir=both];
+"s5" -> "s4" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"s5" -> "s3" [arrowhead=vee, arrowtail=none, color="#40e0d0"];
+"s4" -> "s3" [arrowhead=vee, arrowtail=dot, color="#000099"];
+"s3" -> "s2" [arrowhead=dot, arrowtail=vee, color="#000099"];
+"s2" -> "s1" [arrowhead=dot, arrowtail=dot, color=red];
+}

@@ -1,0 +1,25 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	posrats_mice [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; mice + >;];
+	and1 [shape = circle;fillcolor = white;label = "&";];
+	posrats_rabbits [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; rabbits + >;];
+	negrats_tussock [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock &#8210; >;];
+	and2 [shape = circle;fillcolor = white;label = "&";];
+	negrats_redpolls [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; redpolls &#8210; >;];
+	and3 [shape = circle;fillcolor = white;label = "&";];
+	posrats_macroInverts [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts + >;];
+
+posrats_mice->and1;
+posrats_mice->and2;
+posrats_mice->and3;
+and1->negrats_tussock;
+posrats_rabbits->and1;
+posrats_rabbits->and2;
+posrats_rabbits->and3;
+and2->negrats_redpolls;
+and3->posrats_macroInverts;
+
+}

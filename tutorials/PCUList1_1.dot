@@ -1,0 +1,35 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	True [shape = circle;fillcolor = white;];
+	negrats_surfaceSeabirds [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; surfaceSeabirds &#8210; >;];
+	or1 [shape = circle;fillcolor = white;label = or;];
+	posrats_rabbits [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; rabbits + >;];
+	posrats_herbfield [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; herbfield + >;];
+	or2 [shape = circle;fillcolor = white;label = or;];
+	posrats_prions [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; prions + >;];
+	posrats_skuas [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas + >;];
+	or3 [shape = circle;fillcolor = white;label = or;];
+	negrats_herbfield [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; herbfield &#8210; >;];
+	negrats_rabbits [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; rabbits &#8210; >;];
+	or4 [shape = circle;fillcolor = white;label = or;];
+	negrats_prions [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; prions &#8210; >;];
+	negrats_skuas [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas &#8210; >;];
+
+True->negrats_surfaceSeabirds;
+True->or1;
+True->or2;
+True->or3;
+True->or4;
+or1->posrats_rabbits;
+or1->posrats_herbfield;
+or2->posrats_prions;
+or2->posrats_skuas;
+or3->negrats_herbfield;
+or3->negrats_rabbits;
+or4->negrats_prions;
+or4->negrats_skuas;
+
+}

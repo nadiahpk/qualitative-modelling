@@ -1,0 +1,14 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	poss3_s3 [shape = box;fillcolor = white;label = < <font point-size="10">&#9785;species 3</font><br align="left"/> &nbsp; &nbsp; species 3 + >;];
+	negs3_s4 [shape = box;fillcolor = gray;label = < <font point-size="10">&#9785;species 3</font><br align="left"/> &nbsp; &nbsp; species 4 &#8210; >;];
+	negs3_s5 [shape = box;fillcolor = gray;label = < <font point-size="10">&#9785;species 3</font><br align="left"/> &nbsp; &nbsp; species 5 &#8210; >;];
+
+poss3_s3->negs3_s4;
+negs3_s4->negs3_s5;
+negs3_s5->poss3_s3;
+
+}

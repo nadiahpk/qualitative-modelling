@@ -1,0 +1,40 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	posrats_mice [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; mice + >;];
+	and1 [shape = circle;fillcolor = white;label = "&";];
+	posrats_redpolls [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; redpolls + >;];
+	or1 [shape = circle;fillcolor = white;label = or;];
+	negrats_petrels [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; petrels &#8210; >;];
+	negrats_macroInverts [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts &#8210; >;];
+	posrats_albatrosses [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; albatrosses + >;];
+	and2 [shape = circle;fillcolor = white;label = "&";];
+	or2 [shape = circle;fillcolor = white;label = or;];
+	negrats_burrowSeabirds [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; burrowSeabirds &#8210; >;];
+	and3 [shape = circle;fillcolor = white;label = "&";];
+	or3 [shape = circle;fillcolor = white;label = or;];
+	posrats_skuas [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas + >;];
+
+posrats_mice->and1;
+posrats_mice->and2;
+posrats_mice->and3;
+and1->or1;
+posrats_redpolls->and1;
+posrats_redpolls->and2;
+posrats_redpolls->and3;
+or1->negrats_petrels;
+or1->negrats_macroInverts;
+or1->posrats_albatrosses;
+and2->or2;
+or2->negrats_petrels;
+or2->negrats_burrowSeabirds;
+or2->posrats_albatrosses;
+and3->or3;
+or3->negrats_burrowSeabirds;
+or3->negrats_macroInverts;
+or3->posrats_albatrosses;
+or3->posrats_skuas;
+
+}

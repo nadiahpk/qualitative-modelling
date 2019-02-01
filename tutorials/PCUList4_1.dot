@@ -1,0 +1,34 @@
+digraph {
+
+	node[style="rounded,filled", width=0, margin=0];
+
+
+	negrats_rabbits [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; rabbits &#8210; >;];
+	and1 [shape = circle;fillcolor = white;label = "&";];
+	posrats_tussock [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; tussock + >;];
+	posrats_burrowSeabirds [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; burrowSeabirds + >;];
+	and2 [shape = circle;fillcolor = white;label = "&";];
+	posrats_skuas [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; skuas + >;];
+	and3 [shape = circle;fillcolor = white;label = "&";];
+	posrats_albatrosses [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; albatrosses + >;];
+	and4 [shape = circle;fillcolor = white;label = "&";];
+	or1 [shape = circle;fillcolor = white;label = or;];
+	posrats_redpolls [shape = box;fillcolor = white;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; redpolls + >;];
+	negrats_macroInverts [shape = box;fillcolor = gray;label = < <font point-size="10">&darr; rats</font><br align="left"/> &nbsp; &nbsp; macroInverts &#8210; >;];
+
+negrats_rabbits->and1;
+negrats_rabbits->and2;
+negrats_rabbits->and3;
+negrats_rabbits->and4;
+and1->posrats_burrowSeabirds;
+posrats_tussock->and1;
+posrats_tussock->and2;
+posrats_tussock->and3;
+posrats_tussock->and4;
+and2->posrats_skuas;
+and3->posrats_albatrosses;
+and4->or1;
+or1->posrats_redpolls;
+or1->negrats_macroInverts;
+
+}
