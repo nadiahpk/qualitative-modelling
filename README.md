@@ -8,6 +8,8 @@ The main functions can be found in the `qualmod/` directory:
 
 ## Project 1: Introducing the Boolean approach to Qualitative Modelling
 
+[![DOI](https://zenodo.org/badge/36830558.svg)](https://zenodo.org/badge/latestdoi/36830558)
+
 ### About the manuscript
 
 Kristensen, N.P., Chishom, R.A., and McDonald-Madden, E. (2019) Dealing with high uncertainty in qualitative network
